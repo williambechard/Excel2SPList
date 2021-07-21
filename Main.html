@@ -1,0 +1,2486 @@
+<!-- Script References / JS Libraries and CSS -->
+<script
+  src="https://code.jquery.com/jquery-3.6.0.min.js"
+  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+  crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/shim.min.js" integrity="sha512-nPnkC29R0sikt0ieZaAkk28Ib7Y1Dz7IqePgELH30NnSi1DzG4x+envJAOHz8ZSAveLXAHTR3ai2E9DZUsT8pQ==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js" integrity="sha512-wBcFatf7yQavHQWtf4ZEjvtVz4XkYISO96hzvejfh18tn3OrJ3sPBppH0B6q/1SHB4OKHaNNUKqOmsiTGlOM/g==" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+<script lang="javascript" src="http://malsup.github.io/jquery.blockUI.js"></script>
+
+<script lang="javascript" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.2/jquery.modal.min.js" integrity="sha512-ztxZscxb55lKL+xmWGZEbBHekIzy+1qYKHGZTWZYH1GUwxy0hiA18lW6ORIMj4DHRgvmP/qGcvqwEyFFV7OYVQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.2/jquery.modal.css" integrity="sha512-JP49dvydjvdq6qd31grbdqIeExUyLFFIIneoetY/cJ+eQeJ6ok5HhaM4kQfIeQV4maAMGQ5kf4In3T7VKwMufg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script lang="javascript" src="//cdn.datatables.net/plug-ins/1.10.24/sorting/datetime-moment.js"></script>
+
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js" integrity="sha512-rMGGF4wg1R73ehtnxXBt5mbUfN9JUJwbk21KMlnLZDJh7BkPmeovBuddZCENJddHYYMkCh9hPFnPmS9sspki8g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.css" integrity="sha512-0nkKORjFgcyxv3HbE4rzFUlENUMNqic/EzDIeYCgsKa/nwqr2B91Vu/tNAu4Q0cBuG4Xe/D1f/freEci/7GDRA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<!-- End Script References / JS Libraries and CSS -->
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Tab Navigation-->
+<div class="w3-bar w3-black" id="tabNavBar">
+</div>
+
+<div id="tabsContainer">
+    <div class='greyOut' id='page_greOut'></div>
+    <div class="loader" id = 'page_loader'></div>
+    <!-- Tabs -->
+</div>
+
+<div id='SettingsModal' class='modal'>
+    <!--span onclick="" class="w3-button w3-display-topright">&times;</span-->
+    <div id='settingsContainer'>
+        <div id='innerContent'>
+            <div class='w3-card-4 innerStyle' style="overflow:inherit;">
+                <!-- Tab Navigation-->
+                <div class="w3-bar w3-black" id="tabSettingsBar">
+                    <button id='addList' class="w3-bar-item w3-button w3-green" onclick="addListItem(this); return false;">&plus;</button>
+                </div>
+                <div class="w3-container" style="transform:translateY(-30px);"> 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Template Tab Bar-->
+<button id="TabBarTemplate" style="display:none;" class="w3-bar-item w3-button" onclick="openTab(this); return false;"></button>
+<!--Template page-->
+<div id="pageTemplate" class="tab" style="display:none;">
+    <div class='greyOut'></div>
+    <div class="loader"></div>
+    <div class="tabPage">
+        <br>
+        <!-- Data TABLE -->
+        <div class="block" id="dtContainer">    
+            <table class="display" cellspacing="0" width="100%">    
+                <thead>
+                    <tr></tr>          
+                </thead>    
+                <tfoot>
+                    <tr></tr>    
+                </tfoot>    
+            </table>    
+        </div>
+        <br>
+        <div class="w3-display-bottomright" style="margin-bottom:6px; margin-right:4px;">Date Updated: <span class='updateDate'></span>
+        </div>
+        <br>
+    </div>
+</div>
+
+<style>
+    .dataTables_wrapper{
+        overflow-x:auto;
+    }
+.updateDate{
+    font-weight: bold;
+}
+html.w3, body.w3{
+    font-size:unset;
+}
+#drop{
+	border:2px dashed #bbb;
+	background-color:#F5F5F5;
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
+	border-radius:5px;
+	padding:25px;
+	text-align:center;
+	font:20pt bold,"Vollkorn";
+	color:#bbb;	 
+}
+
+#contentBox{
+	margin-left:auto;
+	margin-right:auto;
+}
+
+#sideNavBox{
+	display:none;
+}
+
+.style1 {
+	text-align: right;
+}
+
+#XLSOutput, #XLSOutput2{
+	width:inherit;
+	display:inline-block;
+	height: 400px;
+	overflow-y: auto;
+	resize:none;
+	white-space:nowrap;
+	overflow-x:hidden;
+	text-overflow: ellipsis;
+	border:1px solid slategray;
+}
+
+.flex{
+	display:flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: space-between;
+}
+
+.tableNotification{
+	table-layout: fixed;
+	width:100%;
+	border-collapse: collapse;
+	border: 1px solid slategray;
+}
+
+.tableNotification tr, .tableNotification td{
+	border: 1px solid slategray;
+	border-collapse: collapse;
+
+}
+
+.tableNotification td{
+	width:100%;
+	max-width:100%;
+}
+    .ui-sortable-helper{
+        transform:translateY(-150px);
+        border:2px solid black;
+    }
+    .sortable-placeholder{
+        background-color:yellow!important;
+    }
+    #settingsHeader{
+        margin:unset;
+        color:green;
+        font-weight:bold;
+    }
+    .settingsTable{
+        margin-top:5px;
+        margin-bottom:10px;
+    }
+    .block{
+        width:100%;
+    }
+     
+    .w3-container{
+        margin:2%;
+    }
+
+    .w3-modal-content{
+        min-height:90%;
+        width:90%;
+    }
+
+    .w3-modal{
+        padding-top:3%;
+    }
+ 
+#SettingsModal{
+    background-color: gainsboro;
+    min-height:400px;
+}
+#backgroundGreyOut{
+    width:100%;
+    height:100%;
+    background-color: rgba(0,0,0,.25);
+    z-index: 1;
+    position:fixed;
+    top:0px;
+    left:0px;
+}
+
+.modal{
+    max-width:unset;
+}
+
+.modalSettings{
+    position:absolute;
+    top:25%;
+    left:25%;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+    align-items:center;
+}
+
+.adminOnly{
+    border:1px dashed red;
+}
+
+.dataTable thead{
+    background-color:darkgrey!important;
+}
+
+.dataTables_filter{
+    padding-bottom:6px;
+}
+/* Center the loader */
+.loader {
+  position:fixed;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  width: 150px;
+  height: 150px;
+  margin: -75px 0 0 -75px;
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+.greyOut{
+    position: absolute;;
+    width:100%;
+    height:100%;
+    background-color:rgba(0,0,0,.25);
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+    .highlightTab{
+        background-color: dodgerblue!important;
+    }
+
+    #titleAreaBox{
+        margin:auto;
+        text-align: center;
+    }
+    #pageTitle{
+        left:0;
+        position:unset;
+        font-size:xx-large;
+        font-weight: bold;
+        transform:translateY(-20px);
+    }
+    #tabNavBar{
+        transform: translateY(-102px);
+    }
+    
+    #tabSettingsBar{
+        transform: translateY(-38px);
+    }
+
+    .tab{
+        display:none;
+        flex-direction: column;
+        margin-left:2%;
+        margin-right:2%;
+         
+    }
+
+    .tabPage{
+        display:none;
+        flex-direction:column !important;
+    }
+
+    #tabsContainer{
+        border: 1px solid slategrey;
+         
+        min-height:600px;
+        height:100%;
+        transform: translateY(-102px);
+    }
+
+    .w3-striped tbody tr:nth-child(even){
+        background-color:#e8e8e8;  
+    }
+    .w3-striped tbody tr:nth-child(odd){
+        background-color:#ffffff;  
+    }
+     
+    label{
+        margin:4px;
+    } 
+    input{
+        margin:4px;
+    }
+
+    #settingsPanelTemplate{
+        display:none;
+    }
+
+    .w3-button{
+        background-color:transparent;
+    }
+
+    .w3-modal-content{
+        margin:0;
+    }
+    .pageContent{
+        display:flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+    }
+
+    #innerContent
+    {
+        padding-top:6%;
+    }
+
+    .jquery-modal{
+        z-index:99999;
+    }
+
+    /* Fitting Inputs Styling */
+
+    .form-group {
+        display: flex;
+        flex-flow: row wrap;
+        margin: 0 -1rem 1rem -1rem;
+    }
+
+    [class*="form-col"] {
+        flex: 0 1 100%;
+        padding: 0 1rem;
+    }
+
+    @media (min-width: 576px) {
+  .form-col-4 {
+    flex: 0 0 33.33333%;
+    max-width: 33.33333%;
+  }
+  
+  .form-col-6 {
+    flex: 0 0 49.9%;
+    max-width: 49.9%;
+  }
+
+  .form-col-8 {
+    flex: 0 0 66.66667%;
+    max-width: 66.66667%;
+  }
+  
+  .offset-form-col-4 {
+    margin-left: 33.33333%;
+  }
+  
+    }
+
+input {
+  display: block;
+  width: 100%;
+}
+
+label,
+select {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+}
+
+.fieldSettings{
+    background-color:#f0f0f0;
+}
+ 
+.innerStyle{
+    background-color:#F5F5F5;
+}
+.fieldSettings legend{
+    color:green;
+    font-size:large;
+    font-weight: bold;
+}
+.tooltip {
+  position: relative;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 300px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 115%;
+  left: 50%;
+  margin-left: -60px;
+}
+
+.tooltip .tooltiptext::after {
+  content: " ";
+  position: absolute;
+  top: 100%; /* At the bottom of the tooltip */
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: black transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
+.modalFormatting{
+    min-height:400px;
+    max-width: 800px;
+}
+
+.pointer{
+    cursor: pointer!important;
+}
+</style>
+<div class='w3-container pageContent' id='settingsPanelTemplate'>
+    <div class="w3-responsive"> 
+        <div class='w3-center'>
+            <h1 id='settingsHeader'>Excel Upload Settings</h1>
+        </div>
+        <fieldset class='w3-container fieldSettings w3-card-2'>
+            <legend>Excel Settings</legend>
+        <table class="settingsTable w3-table w3-striped w3-border">
+            <tbody>
+                <tr>
+                    <td>
+                        
+                        <div class="form-group tooltip">
+                            <div class="form-col-6">
+                                <label for="fileKeyWord">File (Unique) Keyword:</label>
+                            </div>
+                            <span class="tooltiptext">Unique Word in the File Name</span>
+                            <div class="form-col-6">
+                                <input type="text" name = "fileKeyWord">
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group tooltip">
+                            <div class="form-col-6"><label for="HeaderRow">Header Row:</label></div>
+                            <span class="tooltiptext">The Row in the Excel File that is the Header</span>
+                            <div class="form-col-6"><input type="text" name = "HeaderRow"></div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group tooltip">
+                            <div class="form-col-6"><label for="DispTabOrder" >Tab Position:</label></div>
+                            <span class="tooltiptext">The Order that this Tab will be in on the WebPage</span>
+                            <div class="form-col-6"><input type="text" name = "DispTabOrder" ></div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group tooltip">
+                            <div class="form-col-6"><label for="TabName">Tab Title:</label></div>
+                            <span class="tooltiptext">The Title of the Tab on the WebPage</span>
+                            <div class="form-col-6"><input type="text" name = "TabName"></div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group tooltip">
+                            <div class="form-col-6"><label for="CompareColumn">Compare (Output) Name:</label></div>
+                            <span class="tooltiptext">A Unique Column (from Output Field Name), that is used when Updating Items (thus comparing what is new, and old based on this matching Field)</span>
+                            <div class="form-col-6"><input type="text"  name = "CompareColumn"></div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group tooltip">
+                            <div class="form-col-6"><label for="EndCondition">End Condition:</label></div>
+                            <span class="tooltiptext">Data in the Excel, Column 1 which specifies the end of usable data. Usually this will be either some text (that doesnt change), or you can leave this empty if the end of the data is simply nothing.</span>
+                            <div class="form-col-6"><input type="text" name = "EndCondition"></div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group tooltip">
+                            <div class="form-col-6"><label for="targetHTML">target HTML Body:</label></div>
+                            <span class="tooltiptext">The location (HTML element ID) in the Webpage that will store the DataTable Pages</span>
+                            <div class="form-col-6"><input type="text"  name = "targetHTML" ></div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group tooltip">
+                            <div class="form-col-6"><label for="targetHTMLNav">target HTML Nav:</label></div>
+                            <span class="tooltiptext">The location (HTML element ID) in the Webpage that will store the Tabs</span>
+                            <div class="form-col-6"><input type="text"  name = "targetHTMLNav"></div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        </fieldset>
+    </div>
+    <div class="w3-responsive"> 
+    <fieldset class='w3-container fieldSettings w3-card-2'>
+        <legend class="w3-text-orange">Cell Data Properties</legend>
+        <table class="settingsTable w3-table w3-striped w3-border cellData">
+            <thead class="w3-black w3-text-white">
+                <th></th>
+                <th title="EXACT Column Name from the Excel File" class='tooltip'>
+                    <div>Column Name</div>
+                    <span class="tooltiptext">Name from the Excel HEADER Row</span>
+                </th>
+                <th title="The Name of the Data Table Column" class='tooltip'>Output Field Name
+                    <span class="tooltiptext">Name that will show in the DataTable</span>
+                </th>
+                <th></th>
+            </thead>
+            <tbody class='pointer' >
+                <tr style="background-color:lightgrey;"><td><button id="addRowBTN" class="w3-left w3-button w3-green" onclick="addRow(this); return false;">&plus;</button></td><td><input type="text" style="visibility:hidden;"></td><td><input type="text" style="visibility:hidden;"></td><td></td></tr>
+            </tbody>
+        </table>
+    </fieldset>
+    </div>
+    <div class="w3-responsive" style="overflow-x: unset;"> 
+        <fieldset class='w3-container fieldSettings w3-card-2'>
+            <legend class="w3-text-blue">Cell Formatting</legend>
+            <table  class="w3-table w3-striped w3-border formattingTable" colName="" style="margin-bottom:10px;">
+                <thead class="w3-black w3-text-white">
+                <th></th>
+                <th title="Column to apply the formatting to." class='tooltip'>
+                    <div>Target Column</div>
+                    <span class="tooltiptext">Column to apply the formatting to</span>
+                </th>
+                <th title="Use Original Cell Formatting?" class='tooltip'>
+                    <div>Use Original Cell Formatting?</div>
+                    <span class="tooltiptext">Use Original Cell Formatting?</span>
+                </th>
+                <th title="Column to apply the formatting to." class='tooltip'>
+                    <div>Data Type</div>
+                    <span class="tooltiptext">Column to apply the formatting to</span>
+                </th>
+                <th title="The Name of the Data Table Column" class='tooltip'>
+                    <div>Condition</div>
+                    <span class="tooltiptext">Name that will show in the DataTable</span>
+                </th>
+                <th title="The Name of the Data Table Column" class='tooltip'>
+                    <div>Value</div>
+                    <span class="tooltiptext">Name that will show in the DataTable</span>
+                </th>
+                <th title="The Name of the Data Table Column" class='tooltip'>
+                    <div>Color</div>
+                    <span class="tooltiptext">Name that will show in the DataTable</span>
+                </th>
+                <th title="The Name of the Data Table Column" class='tooltip'>
+                    <div>Target</div>
+                    <span class="tooltiptext">Name that will show in the DataTable</span>
+                </th>
+                </thead>
+                <tbody>
+                <tr style="background-color:lightgrey;">
+                    <td><button id="addFRowBTN" class="w3-left w3-button w3-green" onclick="addFormattingRow(this); return false;">&plus;</button></td>
+                    <td><input type="text" style="visibility:hidden;"></td>
+                    <td><input type="text" style="visibility:hidden;"></td>
+                    <td><input type="text" style="visibility:hidden;"></td>
+                    <td><input type="text" style="visibility:hidden;"></td>
+                    <td><input type="text" style="visibility:hidden;"></td>
+                    <td><input type="text" style="visibility:hidden;"></td>
+                    <td><input type="text" style="visibility:hidden;"></td>
+                </tr>
+                </tbody>
+            </table>
+        </fieldset>
+    </div>
+    <br>
+        <button style="margin-bottom:10px;" class="w3-red w3-button w3-left" onclick="RemoveListData(this); return false;">Remove</button>
+        <button style="margin-bottom:10px;" class="w3-green w3-button w3-right" onclick="SaveListData(this); return false;">Save</button>       
+</div>
+
+<script>
+var siteURL = _spPageContextInfo.webAbsoluteUrl;
+//var listName = 'PersonnelSettings'
+var ExcelConfigs=[];
+var DataTables = {};
+var allTitles = ['ExcelData', 'ExcelSettings'];
+
+function SaveListData(e){
+    var savedListItems =[];   
+    var allIds = [];
+    var allListItems = SPHGetListItems(allTitles[1], '?$Select=Id,JSON', siteURL);  
+
+    allListItems.done(function(data){
+        //console.log(data.d);
+        $.each(data, function(i,v){
+            console.log('v = ', v);
+            allIds.push(v.Id.toString());
+            savedListItems.push(v);
+        })
+
+        //console.log('allIds ', allIds);
+        //console.log('spid of this page', $(e).closest('.tabPage').attr('SPID'));
+        //console.log('index of ', allIds.indexOf($(e).closest('.tabPage').attr('SPID')));
+        var SPID = $(e).closest('.tabPage').attr('SPID').toString();
+        var itemProp = SetItemProperties(e);
+
+        if(allIds.indexOf(SPID) != -1){
+            //update item
+            //console.log('update item');
+            
+            var updItem = SPHUpdateItemByID(allTitles[1], SPID, itemProp, siteURL, SPHGetItemType(allTitles[1]));
+  
+            updItem.done(function(data){
+                //success!!!
+                alert('Item successfully UPDATED. page will now refresh');
+                location.reload(true);
+            }).fail(function(e){ alert('Failed Updating Item by ID! ' + e.responseText + '. page will now refresh'); location.reload(true);});
+
+        }else{
+            //new item
+            //console.log('create new item');
+            
+             
+            var newItem = SPHCreateListItem(allTitles[1], itemProp, siteURL, SPHGetItemType(allTitles[1]));
+ 
+            newItem.done(function(data){
+                //success
+                alert('Successfully created a new Item, page will now refresh');
+                location.reload(true);
+            }).fail(function(e){ alert('Failed creating List Item! ' + e.responseText + ' the page will now refresh'); location.reload(true);});
+        }
+
+    }).fail(function(e){ alert('Failed Getting List Items! ' + e.responseText);});
+}
+
+function SetItemProperties(e){
+    var tPage = $(e).closest('.tabPage');
+
+    var pageObj = {};
+    pageObj['Keyword'] = tPage.find('input[name="fileKeyWord"]').val();
+    pageObj['HeaderRow'] = tPage.find('input[name="HeaderRow"]').val();
+    pageObj['TabPosition'] = tPage.find('input[name="DispTabOrder"]').val();
+    pageObj['TabName'] = tPage.find('input[name="TabName"]').val();
+    pageObj['CompareColumn'] = tPage.find('input[name="CompareColumn"]').val();
+    pageObj['EndCondition'] = tPage.find('input[name="EndCondition"]').val();
+    pageObj['targetHTML'] = tPage.find('input[name="targetHTML"]').val();
+    pageObj['targetHTMLNav'] = tPage.find('input[name="targetHTMLNav"]').val();
+
+    var allFields = [];
+
+    var formattingLength =  tPage.find('table.formattingTable').find('tbody').find('tr').length -1;
+    var formattingObj = {};
+
+    tPage.find('table.formattingTable').find('tbody').find('tr').each(function(i, row){
+        
+        if(i < formattingLength){
+            var tCol = $($(this).find('select option:selected')[0]).val();
+            var origFormatting = $($(this).find('select option:selected')[1]).val();
+            var dType = $($(this).find('select option:selected')[2]).val();
+            var condition = $($(this).find('select option:selected')[3]).val();
+            var value = $($(this).find('input')[0]).val();
+            var color = $($(this).find('input')[1]).val();
+            var targetOpt = $($(this).find('select option:selected')[4]).val();
+
+            if(!formattingObj.hasOwnProperty(tCol)) formattingObj[tCol] = [];
+            formattingObj[tCol].push({'dType':dType, 'origFormatting':origFormatting, 'condition':condition, 'value':value, 'color':color, 'targetOpt':targetOpt});
+            //console.log('formatting row = ', $(this));
+        }
+        var allTD =$(this).find('td'); 
+    });
+
+    //console.log('formattingObj ', formattingObj);
+
+    tPage.find('table.cellData').find('tbody').find('tr').each(function(row){
+        //console.log('row = ', $(this));
+        var allTD =$(this).find('td'); 
+ 
+        var columnData = {};
+        columnData['columnName'] = $($(allTD[1]).find('input')).val();
+        var oName = $($(allTD[2]).find('input')).val();
+        columnData['outputName'] = oName;
+        if(formattingObj.hasOwnProperty(oName)){
+            columnData['styles'] = formattingObj[oName]; 
+        }else  columnData['styles'] = [];
+        allFields.push(columnData);
+    });
+
+   
+
+    allFields.pop();
+
+    pageObj['Data'] = allFields;
+
+    var itemProperties = {};
+
+    itemProperties["JSON"] = JSON.stringify(pageObj);
+    //console.log('itemProperties ', itemProperties);
+    return itemProperties;
+}
+
+function RemoveListData(e){
+    if(confirm('Are you sure you want to completely remove this List Item and all its Columns? This cannot be undone!')==true){
+        //remove list item
+        var SPID = $(e).closest('.tabPage').attr('SPID').toString();
+        //console.log('SPID = ', SPID);
+        
+        if(SPID!=''){
+        var itemDelete = SPHDeleteListItem(allTitles[1], SPID, siteURL);
+  
+        itemDelete.done(function(data){
+            //item successfully deleted
+            alert('Item successfully removed. page will refresh');
+            
+            //remove its tab!
+            $('#tabSettingsBar').find('button[targetPage^="' + $(e).closest('.tabPage').attr('id') + '"]').remove();
+            
+            //then remove page
+            $(e).closest('.tabPage').remove();
+
+            //now refresh
+            location.reload(true);
+        
+            
+        }).fail(function(e){ alert('Failed Deleting Item! ' + e.responseText);});
+    }else console.error('SPID is ""', $(e).closest('.tabPage'));
+    
+    }
+}
+
+function addFormattingRow(e){
+    //console.log('row passed e ', $(e).closest('.tabPage').find('.formattingTable'));
+    var colNames = $(e).closest('.tabPage').find('.cellData').find('tbody').find('tr');
+    //console.log('colNames = ', colNames);
+    var cNames = [];
+
+    $.each(colNames, function(i,v){
+        if(i!=colNames.length-1) cNames.push('<option value="'+ $($(v).find('input')[1]).val()  +'">' + $($(v).find('input')[1]).val() + '</option>');
+    });
+
+    //console.log('cNames = ', cNames);
+    var Row = '<tr><td><button class="w3-button w3-red" onclick="removeRow(this); return false;">&minus;</button></td><td><div class="colName">'+
+        '<select class="fieldOpts">'+ cNames.join('') + '</select>'+
+        '</div></td><td><select class="origColors" onchange="origChange(this);"><option value="false">No</option><option value="true">Yes</option></select></td><td><select class="dataType"><option value="String " selected>String</option><option value="Number ">Number</option><option value="Date DD-MMM-YYYY">Date : DD-MMM-YYYY</option><option value="Date DD-MM-YYYY">Date : DD-MM-YYYY</option><option value="Date DD-MMM-YY">Date : DD-MMM-YY</option></select></td><td><select><option value="=">=</option><option value="!=">!=</option><option value="<="><=</option><option value=">=">>=</option><option value="<"><</option>'+
+        '<option value=">">></option></select></td><td><input type="text"></td><td><input type="color"></td><td><select><option value="Row">Row</option><option value="Cell">Cell</option></select></td></tr>'; 
+
+    $(Row).insertBefore($(e).closest('tr'));
+   
+
+
+    return $(e).closest('tr').prev();
+}
+function origChange(e){
+     
+    if($(e).val()=='true'){
+        console.log('true');
+        $(e).closest('td').next().hide();
+        $(e).closest('td').next().next().hide();
+        $(e).closest('td').next().next().next().hide();
+        $(e).closest('td').next().next().next().next().hide();
+        $(e).closest('td').next().next().next().next().next().hide();
+    }else{
+        console.log('false');
+        $(e).closest('td').next().show();
+        $(e).closest('td').next().next().show();
+        $(e).closest('td').next().next().next().show();
+        $(e).closest('td').next().next().next().next().show();
+        $(e).closest('td').next().next().next().next().next().show();
+    }
+    
+}
+function addRow(e){
+    //console.log('row passed e ', e);
+    var Row = '<tr><td><button class="w3-button w3-red" onclick="removeRow(this); return false;">&minus;</button></td><td><input type="text"></td><td><input type="text"></td>'+
+        '<td></td></tr>'; 
+
+    $(Row).insertBefore($(e).closest('tr'));
+   
+    return $(e).closest('tr').prev();
+}
+
+function removeRow(e){
+    $(e).closest('tr').remove();
+}
+
+function setupFieldValidation(targetArea){
+//safety checks for field inputs
+            //number check for HeaderRow
+            targetArea.find('input[name="HeaderRow"]').on('input', function(){
+                    //check for numeric
+                    if(!$.isNumeric($(this).val())){
+                        alert('Tab Position is not a number, please enter a valid number');
+                        $(this).val('');
+                    }
+            });
+
+            //ensure unique Keyword
+            targetArea.find('input[name="fileKeyWord"]').on('input', function(){
+                var duplicateFound = false;
+                var allNames = $(this).closest('.tabPage').closest('.w3-container').find('input[name="fileKeyWord"]');
+                allNames = allNames.map(function(i, v){//console.log('v=',v); 
+                return $(v).val();});
+               
+                var uniqueNames = {};
+                $.each(allNames, function(i,v){
+                    if(!uniqueNames.hasOwnProperty(v)) uniqueNames[v]= [];
+                    uniqueNames[v].push(1);
+                })
+                 
+                for(prop in uniqueNames){
+                    if(uniqueNames[prop].length>1){
+                        //duplicate detected
+                        duplicateFound=true;
+                    }
+                }
+
+                if(duplicateFound){
+                    alert('Duplicate File Keyword found: ' + $(this).val() + ' Please choose/use a unique keyword.');
+                    $(this).val('');
+                }
+            });
+
+
+            //input change safety for Tab Position
+            targetArea.find('input[name="DispTabOrder"]').on('input', function(){
+                var duplicateFound = false;
+                //verify that the input order number has not been previously used
+                 
+                var allTabs = $(this).closest('.tabPage').closest('.w3-container').find('input[name="DispTabOrder"]');
+                allTabs = allTabs.map(function(i, v){//console.log('v=',v); 
+                return $(v).val();});
+               
+                var uniqueTab = {};
+                $.each(allTabs, function(i,v){
+                    //console.log('ii = ', i);
+                    //console.log('vv = ', v);
+                    if(!uniqueTab.hasOwnProperty(v)) uniqueTab[v]= [];
+                    uniqueTab[v].push(1);
+                })
+                //console.log('uniqueTab ', uniqueTab);
+                for(prop in uniqueTab){
+                    if(uniqueTab[prop].length>1){
+                        //duplicate detected
+                        duplicateFound=true;
+                    }
+                }
+
+                if(duplicateFound){
+                    alert('Duplicate Tab Value of ' + $(this).val() + ' detected! Please change this to a unique position/value.');
+                    $(this).val('');
+                }else{
+                    //check for numeric
+                    if($(this).val()!=''){
+                        if(!$.isNumeric($(this).val())){
+                            alert('Tab Position is not a number, please enter a valid number');
+                            $(this).val('');
+                        }
+                    }
+                }
+
+            });
+}
+
+function addListItem(e){
+
+    //add the tab
+    //console.log( 'b',$(e).closest('.w3-bar'));
+    //console.log( 'b next ', $(e).closest('.w3-bar').next());
+    var tabArea = $(e).closest('.w3-bar').next();
+    //console.log('tabArea ', tabArea);
+
+    var sTemplate = $('#settingsPanelTemplate').clone();
+
+    sTemplate.attr('id', '');
+   
+
+    var tArea = "<div class='tabPage' id='"+ 'settings_' + ($('#tabSettingsBar').find('button').length + 1).toString() + "'>"+sTemplate.html()+"</div>"
+    var area = tabArea.append(tArea);
+    tabArea.find('#settings_' + ($('#tabSettingsBar').find('button').length + 1).toString()).find('.tabPage').hide();
+
+    //set SPID
+    tabArea.find('.tabPage:last').attr('SPID', '');
+
+    var tabToAdd = '<button targetPage="'+ 'settings_' + ($('#tabSettingsBar').find('button').length + 1) + '" class="w3-bar-item w3-button" onclick="openTab(this); return false;">'+($('#tabSettingsBar').find('button').length).toString()+'</button>';
+    //add the nav bar button
+    $(tabToAdd).insertBefore('#addList');
+
+    //set default values
+    tabArea.find('.tabPage:last').find('input[name="targetHTML"]').val('tabsContainer');
+    tabArea.find('.tabPage:last').find('input[name="targetHTMLNav"]').val('tabNavBar');
+    //also want it opened
+    $('#addList').prev().trigger('click');
+
+
+    setupFieldValidation(tabArea);
+
+    return tabArea.find('.tabPage:last');
+
+}
+function createDataTable(cDate, Settings, Data, Columns){
+    //console.log('create data table');
+    //console.log('settings ', Settings);
+    //console.log('data ', Data);
+    //console.log('columns ', Columns);
+    var template = $('#pageTemplate').clone();
+    template.attr('id', Settings.Keyword + '_page');
+    template.css('display', 'flex');
+
+    //set date
+    //console.log('date = ', cDate);
+    //console.log('updateDate ',  template.find('.updateDate'));
+    template.find('.updateDate').text(cDate);
+
+    var targetHTML = $('#' + Settings.targetHTML); //$('#' + Settings.Keyword + '_page');
+    //console.log('targetHTML = ', targetHTML);
+    if(targetHTML.length>0){
+        //console.log('targetHTML found! ', targetHTML);
+
+        targetHTML.append(template);
+        targetHTML.find('.tabPage').css('display', 'flex');
+        targetHTML.find('.tabPage').css('flex-direction', 'column');
+        
+        //also create the Tab - only if tab html is not ''
+        if(Settings.targetHTMLNav != ''){
+            var newTab = $('#TabBarTemplate').clone();
+            newTab.attr('id', Settings.Keyword + '_TabBar');
+            newTab.css('display', 'flex');
+            newTab.text(Settings.TabName);
+            newTab.attr('targetPage', Settings.Keyword + '_page');
+            $('#'+ Settings.targetHTMLNav).append(newTab);
+        }
+        //$('#tabNavBar').append(newTab);
+    }else{ //this shouldnt happen, unles the settings was not filled out!
+        //console.log('targetHTML not found, will create in standard location');
+        targetHTML.append(template);
+        //$('#tabsContainer').append(template); 
+        $('#' + Settings.Keyword + '_page').find('tabPage').css('display', 'flex');
+        
+        if(Settings.targetHTMLNav != ''){
+            //also create the Tab - if it wasnt ''
+            var newTab = $('#TabBarTemplate').clone();
+            newTab.attr('id', Settings.Keyword + '_TabBar');
+            newTab.css('display', 'flex');
+            newTab.text(Settings.TabName);
+            newTab.attr('targetPage', Settings.Keyword + '_page');
+            //$('#tabNavBar').append(newTab);
+        $('#'+ Settings.targetHTMLNav).append(newTab);
+        }
+    }
+    
+ 
+        //console.log('table for data = ', $('#' + Settings.Keyword+ '_page').find('table.display'));
+        var cData = Columns.map(function(v){
+            //ensure that all data has a prop for every column
+            $.each(Data, function(item, value){
+                if(!value.hasOwnProperty(v.Name)) value[v.Name]='';
+            });
+            //now if the column has formatting, include that as well
+            // first determine if there is any formatting for this column
+            
+
+            return {'mData':v.Name};
+        });
+        //console.log('cData = ', cData);
+
+        var targetTable = $('#' + Settings.Keyword+ '_page').find('table.display');
+
+        //create the Header/Footer
+        var tableHeader = targetTable.find('thead').find('tr');
+	    var tableFooter = targetTable.find('tfoot').find('tr');
+		//only need to do 1x b/c it is the header/footer
+		$.each(Columns, function(index, value){
+			tableHeader.append('<th>'+value.Name +'</th>');
+			tableFooter.append('<th>'+value.Name +'</th>');
+        });	
+
+        //we only care about styles that exist
+        var allStyles = Columns.filter(function(v){ return v.Styles.length>0});
+        $.fn.dataTable.moment( 'DD-MMM-YYYY' );
+       //create the actual data table
+       try { 
+            DataTables[Settings.Keyword + '_DataTable'] =  $('#' + Settings.Keyword+ '_page').find('table.display').DataTable({    
+          	    "bAutoWidth": false, //we want to control the width of our columns specifically, if we were ok with a standardard width we could set this to true
+          		"aaData": Data,  //this is the ajax data that we are passing in
+                "aoColumns": cData,
+                createdRow:function(row, d, dIndex){
+
+                    //first check for internal color
+                   
+                    if(allStyles.length>0){
+                        var today = moment();
+                        
+                        //a style exists
+                        $.each(allStyles, function(i,v){
+                            if(d.hasOwnProperty(v.Name)){ //match to column we are interested in
+
+                                var dValue = d[v.Name];
+                                var Index = v.Index;
+                                //console.log('v.Styles ', v.Styles);
+                                $.each(v.Styles, function(index, value){
+                                    try{
+                                    var color = value.color;
+                                    var targetOpt = value.targetOpt;
+
+                                    var conditionTrue=false;
+                                    
+                                    if(value.origFormatting=='true'){
+                                        conditionTrue=true;
+                                          
+                                        if(d.hasOwnProperty(v.Name+'_fgColor')){
+                                            if(d[v.Name+'_fgColor'] !=''){
+                                                color = '#'+d[v.Name+'_fgColor'];
+                                            }else conditionTrue=false;
+                                        }else conditionTrue=false;
+                                        
+                                    }
+                                    else{
+                                        var condition = value.condition;
+                                        var dType = value.dType.split(' ')[0];
+                                       
+                                        var valueCheck = value.value;
+                                    switch(dType){
+                                        case 'Number':
+                                            valueCheck = Number(valueCheck);
+                                            dValue = Number(dValue);
+                                        break;
+                                        case 'Date':
+                                            dValue = moment(dValue, value.dType.split(' ')[1]);
+                                            valueCheck = parseInt(valueCheck);
+                                        break;
+                                        default:
+                                            break;
+                                    }
+
+                                
+                                    switch(condition){
+                                        case '=':
+                                            if(dType !='Date'){
+                                                if(dValue == valueCheck) conditionTrue=true;
+                                            }else{
+                                                 if(dValue.diff(today, 'days') ==0) conditionTrue=true;
+                                            }
+                                        break;
+                                        case '!=':
+                                            if(dType !='Date'){
+                                                 if(dValue != valueCheck) conditionTrue=true;
+                                            } else if(dValue.diff(today, 'days') != 0) conditionTrue=true;
+                                        break;
+                                        case '<':
+                                            if(dType !='Date'){
+                                                if(dValue < valueCheck) conditionTrue=true;
+                                            }else {
+                                                if( dValue.diff(today, 'days') < valueCheck && dValue.diff(today, 'days')>0) conditionTrue=true;
+                                            }
+                                        break;
+                                        case '>':
+                                            if(dType !='Date'){
+                                                if(dValue > valueCheck) conditionTrue=true;
+                                            }
+                                            else if(dValue.diff(today, 'days') > valueCheck) conditionTrue=true;
+                                        break;
+                                        case '<=':
+                                            if(dType !='Date'){
+                                                if(dValue <= valueCheck) conditionTrue=true; 
+                                            } 
+                                            else if(dValue.diff(today, 'days') <= valueCheck  && dValue.diff(today, 'days')>=0) conditionTrue=true;
+                                        break;
+                                        case '>=':
+                                            if(dType !='Date'){
+                                                if(dValue >= valueCheck) conditionTrue=true;
+                                            }
+                                            else if(dValue.diff(today, 'days') >= valueCheck) conditionTrue=true;
+                                        break;
+                                    }
+                                }
+                            
+                                    if(conditionTrue==true){
+                                        //console.log('condition TRUE! ');
+                                   
+                                        if(targetOpt =='Row'){
+                                            //target entire row
+                                            
+                                            $(row).find('td').css('background-color', 'unset');
+                                            
+                                            $($(row).find('td')[Index]).css('background-color', color);
+                                            
+                                            
+                                            $(row).css('background-color', color);
+                                            
+                                        }else{
+                                            //target just the cell
+                                            $($(row).find('td')[Index]).css('background-color', color);
+                                        }
+                                        //$($(row).find('td')[Index]).text() + color;
+                                        //console.error('what is in td ', $($(row).find('td')[Index]).text());
+                                        //$($(row).find('td')[Index]).append('<div>'+color+'</div>');
+
+                                        //console.log('style footer ', $($(row).closest('table').find('tfoot').find('.chosen-select')[Index]));
+                                       // $($(row).closest('table').find('tfoot').find('.chosen-select')[Index]).append('<option value="RED">' + 'RED' + '</option>');
+                                    }
+                                }catch(e){
+                                    console.error('error occured with styling ', e)
+                                }
+                                });
+                            
+                            }
+                        });
+                    }
+                },
+                initComplete: function () {
+            			if(typeof checkIsAdmin =='function'){
+                    		//console.log('admin detected');
+                    		$('.adminOnly').show();
+            			}else{
+                			//not an admin so do nothing
+            			}
+            
+            			this.api().columns().every( function (index) {
+             
+                		//if(index!=0){
+                            //console.log('column = ', $(this));
+             			var column = this;
+             			var select = $('<select data-placeholder="Filter" size="2" multiple class="chosen-select"><option value=""></option></select>')
+               			.appendTo( $(column.footer()).empty() )
+               			.on( 'change', function () {
+
+                   			var val = $(this).val()+ "";
+
+                   			val =  val.replace(/,/g, '|');
+                   			//console.log('val = ', val);
+                     
+
+
+                   			column
+                       		.search( val ? '^'+val+'$' : '', true, false )
+                         	.draw();
+               			});
+                            select.attr('colName',$(this.header()).text());
+               				column.data().unique().sort().each( function ( d, j ) {
+                                    
+                                   
+                   			//make special exception for dates as they need to be in a different format
+                   			//  check if on Eval Date Column
+                
+                        	//if(index==8 || index==9){
+                           	// 	d = (moment(d).format('MMM-DD-YYYY'));
+                        	//}
+                               
+                        	    select.append( '<option value="'+d+'">'+d+'</option>' );
+                    
+                            });
+                               
+                             
+            			//}
+           				});
+        			}
+            });
+            //console.error('allStyles', allStyles);
+            var allSelect = $('#' + Settings.Keyword+ '_page').find('table.display').find('.chosen-select');
+			    //set All for the all value (is currently blank) of select drop downs
+    			//(-1 due to the modal)
+    			for(var i = 1; i < allSelect.length-1; i++){
+                    $(allSelect[i]).find('option:first-child').html('All');
+
+                    //discover ColName
+                    //console.log('colName = ',$(allSelect[i]).attr('colName'));
+                    //var colName= $(allSelect[i]).attr('colName');
+                    /*
+                    $.each(allStyles, function(i,v){
+                        if(v.Name == colName){
+                            console.error('allStyles v ', v);
+                            $.each(v.Styles, function(index, value){
+                                //if there is a color option for this column then add it as an option
+                                $(allSelect[i]).append('<option value="'+value.color+'" style="background-color:'+value.color+';">COLOR</option>');
+                            });
+   
+                        }
+                    });*/
+                }
+
+				allSelect.chosen({width:'100%'});
+        }catch(e){
+            console.log('error ' + e);
+        }
+
+       
+    
+}
+function openFormattingPopUp(e){
+    //console.log('openPopUp called with ',  $(e).closest('.tabPage').find('.FormattingModal'));
+   
+    //$(e).closest('.tabPage').find('.FormattingModal').attr('colName', $($(e).closest('tr').find('input')[1]).val());
+
+
+    //copy html
+    var src = $(e).closest('.tabPage').find('.modalFormatting');
+    //console.log('src = ', src);
+
+    $('.modalFormatting').modal({
+        escapeClose:false,
+        clickClose:false,
+        showClose:true,
+        closeExisting: false
+    })
+}
+function openPopUp(e){
+    //console.log('openPopUp called with ', e);
+    $('#'+e).modal({
+        escapeClose:false,
+        clickClose:false,
+        showClose:true,
+        closeExisting: false
+    })
+}
+
+function get_isListExists(listTitle){
+    var deferred = $.Deferred();
+    var ctx = SP.ClientContext.get_current();
+    var web = ctx.get_web();
+    var lists = web.get_lists();
+    ctx.load(lists); 
+
+    ctx.executeQueryAsync(
+        function(){deferred.resolve(lists)},
+        function(sender, args){deferred.reject(sender, args.get_message());}
+    );
+    return deferred.promise();
+}
+
+function createList(listName) {
+    var deferred = $.Deferred();
+    var clientContext = new SP.ClientContext(siteURL);
+    var oWebsite = clientContext.get_web();
+    
+    var listCreationInfo = new SP.ListCreationInformation();
+    listCreationInfo.set_title(listName);
+    listCreationInfo.set_templateType(SP.ListTemplateType.genericList);
+
+    this.oList = oWebsite.get_lists().add(listCreationInfo);
+
+    clientContext.load(oList);
+
+    clientContext.executeQueryAsync(
+        function(){deferred.resolve(listName)},
+        function(sender, args){deferred.reject(sender, args.get_message());}
+    );
+
+    return deferred.promise();
+}
+
+function addFieldToList(listName, fieldName, fieldType) {
+    var deferred = $.Deferred();
+    var clientContext = new SP.ClientContext(siteURL);
+
+    var oList = clientContext.get_web().get_lists().getByTitle(listName);
+    //console.log('oList ', oList);
+/*
+    this.oField = oList.get_fields().getByInternalNameOrTitle('Title');
+    console.log('oField', this.oField);
+    this.oField.Required = false;
+*/
+    this.oField = oList.get_fields().addFieldAsXml('<Field DisplayName=\''+fieldName+'\' Type=\''+fieldType+'\' />', true, SP.AddFieldOptions.defaultValue);
+
+    clientContext.load(oField);
+
+    clientContext.executeQueryAsync(
+        function(){deferred.resolve()},
+        function(e){deferred.reject(e);}
+    );
+    return deferred.promise();
+}
+
+ 
+
+function listCheck(){
+    var allPromises = [];
+ 
+    var listExists = get_isListExists(allTitles);
+    var allPromises2 = [];
+    listExists.done(function(lists){
+        //console.log('lists = ', lists);
+
+        var listExists = false;  
+        var le = lists.getEnumerator();
+        var lResolve = [];
+        var allLists = [];
+        while (le.moveNext()) {
+            allLists.push(le.get_current().get_title());
+        }
+
+        //console.log('allLists', allLists);
+        var toDo = [];
+        $.each(allTitles, function(i,v){
+            if(allLists.indexOf(v)!=-1){
+                //true
+                lResolve.push({'Name':v, 'Exists':true});
+            }else{
+                //we need to create the list
+                lResolve.push({'Name':v, 'Exists':false});
+                toDo.push(v); //push the name
+            }
+        });
+
+        //console.log('lResolve = ', lResolve);
+
+        if(toDo.length>0){
+                //we need to create the lists that dont exist!
+                $.each(toDo, function(i,v){
+                    var newList = createList(v);
+                    allPromises.push(newList);
+                    newList.done(function(data){
+                        //console.log('list created ', data);
+                    });
+                });
+
+                $.when.apply($, allPromises).done(function(d){
+                   
+                        //console.log('all Promises done');
+                        $.each(toDo, function(i,v){
+                            //now add the JSON field
+                            var field = addFieldToList(v, 'JSON', 'Note');
+                            allPromises2.push(field);
+
+                            field.done(function(){console.log('created Field');}).fail(function(e){ console.error('Failed creating field! ' + e);});
+                        });
+
+                        $.when.apply($, allPromises2).done(function(d){
+                            //console.log('done, now running initSetpu');
+                            initSetup();
+                        });
+
+                        
+                     
+                });                
+        }else{
+            initSetup();
+        }
+
+    }).fail(function(e){ alert('Failed creating List! ' + e.responseText);});
+
+   
+}
+
+function initSetup(){
+    //console.log('initSetup running');
+    //$($('#pageTitle').find('a')[0]).text('Personnel Quick Info');
+    
+    //setup Settings
+    var allListItems = SPHGetListItems(allTitles[1], '?$Select=Id,JSON', siteURL);  
+
+    allListItems.done(function(data){
+        //console.log('data = ', data);
+       
+        data.sort(function(a,b){
+            var a2 = JSON.parse(a['JSON']);
+            var b2 = JSON.parse(b['JSON']);
+            return (a2.TabPosition > b2.TabPosition) ? 1:-1;
+        });
+
+        //create dataTables according to our saved data
+        var allListData = SPHGetListItems(allTitles[0], '?$Select=Id,JSON,Modified', siteURL);  
+
+        //grab the addList BTN
+        var addListBTN = $('#addList');
+
+        //create the settings tab
+        $.each(data, function(i,v){
+            var ExcelData = JSON.parse(v.JSON);
+            ExcelConfigs.push(ExcelData);
+            //console.log('excel data = ', ExcelData);
+            var tArea = $(addListItem(addListBTN));
+            //console.log('tArea = ',  tArea);
+            //fill with pulled data
+            tArea.attr('SPID', v.ID);
+            if(ExcelData.hasOwnProperty('Keyword')) tArea.find('input[name="fileKeyWord"]').val(ExcelData.Keyword); else console.error('Keyword not found', ExcelData);
+            if(ExcelData.hasOwnProperty('HeaderRow'))  tArea.find('input[name="HeaderRow"]').val(ExcelData.HeaderRow);
+            if(ExcelData.hasOwnProperty('TabPosition'))  tArea.find('input[name="DispTabOrder"]').val(ExcelData.TabPosition);
+            if(ExcelData.hasOwnProperty('TabName')) tArea.find('input[name="TabName"]').val(ExcelData.TabName);
+            if(ExcelData.hasOwnProperty('CompareColumn')) tArea.find('input[name="CompareColumn"]').val(ExcelData.CompareColumn);
+            if(ExcelData.hasOwnProperty('EndCondition')) tArea.find('input[name="EndCondition"]').val(ExcelData.EndCondition);
+            if(ExcelData.hasOwnProperty('targetHTML')) tArea.find('input[name="targetHTML"]').val(ExcelData.targetHTML);
+            if(ExcelData.hasOwnProperty('targetHTMLNav')) tArea.find('input[name="targetHTMLNav"]').val(ExcelData.targetHTMLNav);
+            if(ExcelData.hasOwnProperty('Data')){
+                var targetTable = $(tArea.find('.settingsTable').find('tbody').find('#addRowBTN'));
+                //console.log('targetTable = ', targetTable);
+                var dropDownOptions = [];
+                $.each(ExcelData.Data, function(index, obj){
+                  
+                    //only if we have good data
+                    if(obj.hasOwnProperty('columnName') && obj.hasOwnProperty('outputName')){
+                        if(typeof obj.columnName !== 'undefined' && typeof obj.outputName !== 'undefined'){
+                            dropDownOptions.push('<option value="'+obj.outputName+'">'+ obj.outputName + '</option>');
+                            //create the rows
+                            var row = addRow(targetTable);
+                            var allInputs = row.find('input');
+
+                            $(allInputs[0]).val(obj.columnName);
+                            $(allInputs[1]).val(obj.outputName);
+                            //console.log('outputName = ', obj.outputName);
+                            if(typeof obj.styles !== 'undefined'){
+                            if(obj.styles.length>0){
+                                $.each(obj.styles, function(i,v){
+                                    //console.log('each style v = ', v);
+                                    //setup the conditions
+
+                                    var r = addFormattingRow($(tArea).find('.formattingTable').find('tbody').find('#addFRowBTN'));
+                                    //console.log('r = ', r);
+                                    //now fill with the data
+                                    var cellsSelect = r.find('select');
+                                    //console.log('cellsSelect = ', cellsSelect);
+                                    $(cellsSelect[0]).find('option[value="'+obj.outputName+'"]').attr('selected', 'selected');
+                                    $(cellsSelect[0]).val(obj.outputName);
+                                    $(cellsSelect[1]).find('option[value="'+v.dType+'"]').attr('selected', 'selected');
+                                    $(cellsSelect[1]).val(v.origFormatting);
+                                    $(cellsSelect[2]).find('option[value="'+v.dType+'"]').attr('selected', 'selected');
+                                    $(cellsSelect[2]).val(v.dType);
+                                    $(cellsSelect[3]).find('option[value="'+v.condition+'"]').attr('selected', 'selected');
+                                    $(cellsSelect[3]).val(v.condition);
+                                    $(cellsSelect[4]).find('option[value="'+v.targetOpt+'"]').attr('selected', 'selected');
+                                    $(cellsSelect[4]).val(v.targetOpt);
+                                    var cellsInput= r.find('input');
+                                    $(cellsInput[0]).val(v.value); 
+                                    $(cellsInput[1]).val(v.color);
+                                    console.log(v.origFormatting);
+                                    if(v.origFormatting=='true'){
+                                        $(cellsSelect[1]).closest('td').next().hide();
+                                        $(cellsSelect[1]).closest('td').next().next().hide();
+                                        $(cellsSelect[1]).closest('td').next().next().next().hide();
+                                        $(cellsSelect[1]).closest('td').next().next().next().next().hide();
+                                        $(cellsSelect[1]).closest('td').next().next().next().next().next().hide();
+                                    }else{
+                                        $(cellsSelect[1]).closest('td').next().show();
+                                        $(cellsSelect[1]).closest('td').next().next().show();
+                                        $(cellsSelect[1]).closest('td').next().next().next().show();
+                                        $(cellsSelect[1]).closest('td').next().next().next().next().show();
+                                        $(cellsSelect[1]).closest('td').next().next().next().next().next().show();
+                                    }
+
+                                     
+                                });
+                            }
+                            }
+                        }
+                    }
+                });
+            }
+
+            //used for filling in the formatting drop down
+            var allFOpts = $(tArea).find('.fieldOpts');
+
+            $.each(allFOpts, function(i,v){
+                var orig = $(v).find(':selected').val();
+                //console.log('orig = ', orig);
+
+                $(v).empty();
+                $(v).append(dropDownOptions.join(''));
+                $(v).find('option[value="'+orig+'"]').attr('selected', 'selected');
+                $(v).val(orig);
+            });
+
+             //safety checks for field inputs
+            setupFieldValidation(tArea);
+        });
+
+        allListData.done(function(data){
+            //console.log('list data,  ', data);
+            //console.log('ExcelConfigs ', ExcelConfigs);
+            var tBar =''
+            $.each(data, function(i,v){
+                var item = JSON.parse(v.JSON);
+                //console.log(item.Data)
+                //console.log(item.Keyword);
+                
+                var matchingConfig = ExcelConfigs.filter(function(v){
+                    return v.Keyword == item.Keyword;
+                });
+
+                if(matchingConfig.length>0){
+                    tBar = matchingConfig[0].targetHTMLNav;
+                    createDataTable(v.Modified.split('T')[0], matchingConfig[0], JSON.parse(item.Data), matchingConfig[0].Data.map(function(d, index){return {'Name':d.outputName, 'Styles':d.styles, 'Index':index};}));
+                    //remove loading screen
+                    $('#' + matchingConfig[0].Keyword+ '_page').find('.greyOut').hide();
+                    $('#' + matchingConfig[0].Keyword+ '_page').find('.loader').hide();
+                }else console.log('No Config file found for data. DataTable will not be created.');
+               
+            });
+
+            
+            $('.settingsTable tbody').sortable({
+                placeholder: "ui-state-highlight sortable-placeholder"
+            });
+            $('.settingsTable tbody').disableSelection();
+            //now show just the first tab
+            //$('#tabNavBar').find('button:first').trigger('click');
+            if(tBar !=''){
+                $('#'+ tBar).find('button:first').trigger('click');
+            }
+                                 
+            //remove loading screen
+            $('#page_greyOut').hide();
+            $('#page_loader').hide();
+        });
+
+        //now make sure only the most recent tab is open
+        //console.log('first click ', $('#addList:last'));
+        $('#tabSettingsBar').find('button:first').trigger('click');
+
+    });
+}
+
+$(document).ready(function(){
+    ExecuteOrDelayUntilScriptLoaded(listCheck, "sp.js");
+});
+
+ 
+
+function openTab(e) {
+    
+    var tabArea = $(e).closest('.w3-bar').next();
+    //console.log('tabArea ', tabArea);
+
+    //hide all tab areas
+    tabArea.find('.tabPage').each(function(index, item){
+        //console.log('attempting to hide', item);
+        $(item).hide();
+    });
+
+    //attempt to show only the one we wanted to open
+    //console.log('attempting to show ', tabArea.find('#' + $(e).attr('targetPage'))); //tabArea.find('#' + $(e).attr('targetPage')));
+    tabArea.find('#' + $(e).attr('targetPage')).show();
+    tabArea.find('#' + $(e).attr('targetPage')).find('.tabPage').show();
+    
+
+    $(e).closest('.w3-bar').find('.w3-bar-item').each(function(index, item){
+        if($(item).attr('targetPage')==$(e).attr('targetPage')){
+            //make it a different style
+            $(item).addClass('highlightTab');
+        }else{
+            //return it to original style
+            $(item).removeClass('highlightTab');
+        }
+    });
+
+}
+
+// SPHelper add in
+/** Info
+ * Summary. Gets all items of a SP List
+ * Description. Returns data from the SP List. Also fills SPHListItems with that data.
+ *        Data can be retrieved by user with SPHReturnItems()
+ * @param {string} ListName The name of the SP List that is targeted
+ * @param {string} additionalParameters Additional text for the Ajax call after /items 
+ *                 will likely begin with ?$select etc or can be an empty string for returning allItems
+ * @param {string} site URL where list exists ex: if my AllItems.aspx address is
+ *                   https://.../quality_assurance/Lists/CIMB/AllItems.aspx then
+ *                   siteURL = "https://.../quality_assurance"
+ * Use:  
+ * var allListItems = SPHGetListItems('ListName', '', 'siteUrl');  
+ *     for advanced pulling from the list if desired but not necessary
+ * allListItems.done(function(data){
+ *      console.log(data.d.results);
+ * }).fail(function(e){ alert('Failed Getting List Items! ' + e.responseText);});
+ */
+ function SPHGetListItems(ListName, additionalParameters, siteUrl)
+{ 
+    UpdateFormDigest(_spPageContextInfo.webServerRelativeUrl, _spFormDigestRefreshInterval);
+    var fullUrl = siteUrl + "/_api/web/lists/GetByTitle('" + ListName + "')/items" + additionalParameters;
+    var deferred=$.Deferred();
+    var nonext = false;
+    var results = [];
+    getItems();
+
+    function getItems(){ 
+        $.ajax({
+            url: fullUrl,
+            type: "GET",
+            headers: {
+                "accept": "application/json;odata=verbose",
+                "content-type": "application/json;odata=verbose",
+            },
+            success: function(data){
+                results = results.concat(data.d.results);
+                //this allows us to get over the SP item limit of 100 items returned
+                if (data.d.__next) {
+                    fullUrl = data.d.__next;
+                    getItems();
+                }else{
+                    deferred.resolve(results);
+                }
+            },
+            error: function(data){
+                errorFunction(data);
+                deferred.reject(data);
+            },
+            complete: function(data){
+            }
+        });
+    }
+    return deferred;
+}
+
+//Helper function to resolve the Item type used when updating list items.
+//   Note:this will fail if listName isnt simple no space no special char like _
+function SPHGetItemType(name) {
+    return "SP.Data." + name.charAt(0).toUpperCase() + name.slice(1) + "ListItem";
+}
+
+
+/** Info
+ * Summary. Grabs an item from a SP List if the id is found
+ * Description. Uses specifically crafted AJAX call to return an item
+ *        (to SPHListItems) if the id is found
+ * @param {string} ListName : Name of SP List
+ * @param {int} id : ID of the item that will be updated
+ * @param {object} itemProperties : object of Column/Field name and its value
+ *    ex  itemProperties["Title"] = "Title of this item"
+ *        itemProperties["Status"] = "Done"  ...etc
+ *  @param {string} site URL where list exists ex: if my AllItems.aspx address is
+ *                   https://.../quality_assurance/Lists/CIMB/AllItems.aspx then
+ *                   siteURL = "https://.../quality_assurance"
+ * @param {string} contentType: Unless you need to set to something special you should use the helper function
+ *                              SPHGetItemType("name of list") to pass the result to this function as
+ *                              it will easily give you the contentType for a given list
+ * Use:
+ * var updItem = SPHUpdateItemByID('ListName', 'string id to update', itemProperties, 'siteUrl', SPHGetItemType('ListName'));
+ * 
+ * updItem.done(function(data){
+ *       //success!!!
+ * }).fail(function(e){ alert('Failed Updating Item by ID! ' + e.responseText);});
+ * 
+ *   see below for how to structure itemProperties
+ * //https://sharepoint.stackexchange.com/questions/105380/adding-new-list-item-using-rest
+/*
+//specify item properties
+var itemProperties = {'Title':'Order task','Description': 'New task'};
+*/
+function SPHUpdateItemByID(ListTitle, id, itemProperties, siteURL, contentType)
+{  
+    UpdateFormDigest(_spPageContextInfo.webServerRelativeUrl, _spFormDigestRefreshInterval);
+    var siteUrl = siteURL;
+    var fullUrl = siteUrl +"/_api/web/lists/GetByTitle('"+ListTitle+"')/items(" + id.toString() + ")";
+    var deferred=$.Deferred(); 
+    var itemPayload = {
+        '__metadata': {'type': contentType}
+    };
+
+    for(var prop in itemProperties){
+        itemPayload[prop] = itemProperties[prop];
+    }
+    
+    //console.log(JSON.stringify(itemPayload));
+    $.ajax({
+        url: fullUrl,
+        type: "POST",
+        data: JSON.stringify(itemPayload),  
+        headers: {
+            "Accept": "application/json;odata=verbose",
+            "content-type": "application/json;odata=verbose",
+            "X-RequestDigest" : $("#__REQUESTDIGEST").val(),
+            "X-HTTP-Method": "MERGE",
+            "If-Match": "*"
+        },
+        success: function(data){
+            deferred.resolve(data);
+        },
+        error: function(data){
+            errorFunction(data);
+            deferred.reject(data);
+        }  
+    });
+    return deferred;
+}
+
+
+/** Info
+ * Summary. Deletes only 1 item from list based on the item's ID
+ * Description. With the passed List Title and the item ID, uses AJAX call
+ *         to delete just that item from the list
+ *  @param {string} ListTitle the target name of the SP List
+ *  @param {int} id the item id that is to be deleted
+ *  @param {string} site URL where list exists ex: if my AllItems.aspx address is
+ *                   https://.../quality_assurance/Lists/CIMB/AllItems.aspx then
+ *                   siteURL = "https://.../quality_assurance"
+ * Use:
+ * var itemDelete = SPHDeleteListItem('ListTitle', 'StringID of item to delete', 'siteURL');
+ * 
+ * itemDelete.success(function(data){
+ *      //item successfully deleted
+ * }).fail(function(e){ alert('Failed Deleting Item! ' + e.responseText);});
+ */
+ function SPHDeleteListItem(ListTitle, id, siteUrl){
+    var fullUrl = siteUrl +"/_api/web/lists/GetByTitle('"+ListTitle+"')/items(" + id.toString() + ")";
+    var deferred=$.Deferred();  
+    $.ajax({
+        url: fullUrl,
+        type: "DELETE",
+        headers: {
+            "accept": "application/json;odata=verbose",
+            "content-type": "application/json;odata=verbose",
+            "X-RequestDigest": $("#__REQUESTDIGEST").val(),
+            "IF-MATCH": "*"
+        },
+        success: function(data){
+            deferred.resolve(data);
+        },
+        error: function(data){
+            errorFunction(data);
+            deferred.reject(data);
+        }  
+    });
+    return deferred;
+}
+
+/** Info
+ * Summary. Grabs an item from a SP List if the id is found
+ * Description. Uses specifically crafted AJAX call to return an item
+ *        (to SPHListItems) if the id is found
+ * @param {string} ListName : Name of SP List
+ * @param {int} id : ID of the item that will be updated
+ * @param {object} itemProperties : object of Column/Field name and its value
+ *    ex  itemProperties["Title"] = "Title of this item"
+ *        itemProperties["Status"] = "Done"  ...etc
+ * @param {string} site URL where list exists ex: if my AllItems.aspx address is
+ *                   https://.../quality_assurance/Lists/CIMB/AllItems.aspx then
+ *                   siteURL = "https://.../quality_assurance"
+ * @param {string} contentType: Unless you need to set to something special you should use the helper function
+ *                              SPHGetItemType("name of list") to pass the result to this function as
+ *                              it will easily give you the contentType for a given list
+ * Use:
+ * //specify item properties
+ *   var itemProperties = {};
+ *   itemProperties["Name of Property"] = value of property
+ *     ie: itemProperties["Title"] = "itemTitle"
+ *         itemProperties["Status"] = "Complete"
+ * var updItem = SPHCreateListItem('ListName', itemProperties, 'siteURL', SPHGetItemType('ListName'));
+ * 
+ * updItem.done(function(data){
+ *      //success
+ * }).fail(function(e){ alert('Failed creating List Item! ' + e.responseText);});
+ *     
+ * //https://sharepoint.stackexchange.com/questions/105380/adding-new-list-item-using-rest
+**/
+function SPHCreateListItem(listName, itemProperties, siteURL, contentType) {
+    UpdateFormDigest(_spPageContextInfo.webServerRelativeUrl, _spFormDigestRefreshInterval);
+    itemProperties["__metadata"] = { "type": contentType };
+    var deferred=$.Deferred(); 
+    $.ajax({
+        url: siteURL + "/_api/web/lists/getbytitle('" + listName + "')/items",
+        type: "POST",
+        contentType: "application/json;odata=verbose",
+        data: JSON.stringify(itemProperties),
+        headers: {
+            "Accept": "application/json;odata=verbose",
+            "X-RequestDigest": $("#__REQUESTDIGEST").val()
+        },
+        success: function (data) {
+            deferred.resolve(data);
+        },
+        error: function (data) {
+            errorFunction(data);
+            deferred.reject(data);
+        }
+    });
+
+    return deferred;
+}
+
+/** Info
+ * Summary. Displays error info to the console
+ * Description. data from the AJAX call is given and the error info is displayed to the console
+ * @param {ajax} data AJAX return data
+ */
+//Error handler
+function errorFunction(data)
+{
+    console.error('error noted in SPHelper_v3.js');
+    console.error(data);
+    console.error(JSON.stringify(data.responseJSON));
+    console.error(data.responseJSON.error.message.value);
+    console.error(JSON.stringify(data.responseJSON));
+}
+// End SPHelper add in
+
+//EXCEL READ
+
+
+
+//Browser compatibility check ----------------------------------------------------------------------------------------------
+var isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0; // Opera 8.0+
+var isFirefox = typeof InstallTrigger !== 'undefined'; // Firefox 1.0+
+var isSafari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification)); // Safari 3.0+ "[object HTMLElementConstructor]" 
+var isIE = /*@cc_on!@*/false || !!document.documentMode; // Internet Explorer 6-11
+var isEdge = !isIE && !!window.StyleMedia; // Edge 20+
+var isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime); // Chrome 1 - 71
+var isBlink = (isChrome || isOpera) && !!window.CSS; // Blink engine detection
+
+//Check for IE first as that is our main compatibility issue
+if(isIE){
+	/*
+ 	console.log("IE browser detected");
+ 	$("#Notify").html("Please upload <font color='green'><b>XLS</b></font> file by using the <font color='blue'>Browse</font><b> Button</b> above...");
+	$("div#drop").hide();
+	*/
+
+	$("#Notify").html("Waiting for <font color='green'><b>XLS</b></font> file to be <font color='blue'>dropped</font> on <b>OUTLINE</b> above...");
+	 var btns = document.getElementsByClassName("newButton");
+	 for(var i =0; i < btns.length; i++)
+	 {
+	 	btns[i].style.display = "none";
+	 }
+}else{
+	 $("#Notify").html("Waiting for <font color='green'><b>XLS</b></font> file to be <font color='blue'>dropped</font> on <b>OUTLINE</b> above...");
+	 var btns = document.getElementsByClassName("newButton");
+	 for(var i =0; i < btns.length; i++)
+	 {
+	 	btns[i].style.display = "none";
+	 }
+}
+
+if(isOpera) console.log("Opera browser detected");
+if(isFirefox) cosnsole.log("Firefox browser detected");
+if(isEdge) console.log("Edge browser detected");
+if(isChrome) console.log("Chrome browser detected");
+// -------------------------------------------------------------------------------------------------------------------------
+
+_spBodyOnLoadFunctionNames.push("runAfterEverythingElse");
+
+BlockUI("Please wait, Loading Data");
+
+function runAfterEverythingElse(){
+   // setTimeout(function(){ //Use Timeout function to ensure function is run without freezing the page
+ 		//Verify fills out the CurrentPersonnel Array with data from the Peronnel Tracking List
+		//$.when(Verify()).done(function(){
+	    
+ 		//Make sure drop zone is shown if not IE
+		//if(!isIE)
+		 $('#drop').show();
+		 
+
+		//Make sure screen is no longer blocked
+		UnBlockUI();
+ 		//});
+	//}, 0);
+}
+
+function handleFileSelect(evt) {
+UploadFileButton(evt);    
+}
+
+
+
+
+
+
+$('#drop').hide();
+
+//sets message for the UI screen block
+function BlockUI(msg)
+{
+	$.blockUI.defaults.message = msg;
+	$.blockUI({ 
+				css: { 
+            	border: 'none', 
+            	padding: '15px', 
+            	backgroundColor: '#000', 
+            	'-webkit-border-radius': '10px', 
+            	'-moz-border-radius': '10px', 
+            	opacity: .5, 
+            	color: '#fff' }
+            }); 
+}
+
+//Unblocks screen
+function UnBlockUI()
+{
+	$.unblockUI();
+}
+
+//parse worksheet into an array
+var sheet2arr = function(sheet){
+   var result = [];
+   var row;
+   var rowNum;
+   var colNum;
+   var range = XLSX.utils.decode_range(sheet['!ref']);
+   for(rowNum = range.s.r; rowNum <= range.e.r; rowNum++){
+      row = [];
+       for(colNum=range.s.c; colNum<=range.e.c; colNum++){
+          var nextCell = sheet[XLSX.utils.encode_cell({r: rowNum, c: colNum})];
+          if( typeof nextCell === 'undefined' ){
+             row.push(void 0);
+          } else {
+              var color = "";
+              if(typeof nextCell.s != 'undefined'){
+                if(nextCell.s.hasOwnProperty('fgColor')) color = nextCell.s.fgColor.rgb;
+                else console.error('no fgColor prop');
+              }
+              row.push(({'value':nextCell.w, 'fgColor':color}));
+          }
+       }
+       result.push(row);
+   }
+   return result;
+};
+
+function WorkBookHandler2(workBook)
+{	
+	// will return an array of the worksheet data
+	//		1. WorkSheet Name
+	//		2. Array1
+	//			1. Column Data 1
+	//			2. Column Data 2
+	//			3. etc
+	//		3. Array2
+	 
+	//console.log(workBook.Props.Title);
+	var Data = [];
+	
+	//loop through each sheet in the workbook
+	workBook.SheetNames.forEach(function(sheetName) {
+			
+		//parse the sheet and store its contents into an array
+		var SheetArray = sheet2arr(workBook.Sheets[sheetName]);
+        
+		//GetRow Parses the Sheet array data down a bit
+		//		It makes it so the first element in the array is the name of the sheet
+		//		It ensures that the other elements are Arrays of the Row(s)
+		//		Each element of that array will be First name and the second element Last Name
+		//		It will create this correctly even if the column has a combined First/Last Name row
+        //console.log(GetRow(sheetName, SheetArray, 0, "", 1, true, 0), 0, 1,true);
+        
+		Data.push(GetRow(sheetName, SheetArray, 0, "", 1, true, 0), 0, 1,true);
+        
+		//console.log(sheetName);
+		//console.log(Data);
+	});
+	
+	return Data;
+}
+
+function deleteItem(url, siteURL) {
+$.ajax({
+    url: siteURL + url,
+    type: "DELETE",
+    headers: {
+        "accept": "application/json;odata=verbose",
+        "X-RequestDigest": $("#__REQUESTDIGEST").val(),
+        "If-Match": "*"
+    },
+    success: function (data) {
+
+    },
+    error: function (error) {
+        alert(JSON.stringify(error));
+    }
+});
+}
+
+
+function formatDate(dateToConvert){
+	//var pattern = "YYYY-MM-DD";
+	return dateToConvert.split['-'][2]+ '-' + dateToConvert.split['-'][0]  + '-' + dateToConvert.split['-'][1];
+}
+
+//This deals with the array data based on the name of the excel sheet (which earlier was added as the first element in the array)
+function XLStoSharePointList(ListData)
+{
+	//console.log('list data from excel',ListData);
+	//parse array
+	if(ListData.length>0){
+		if(ListData[0].length>0){
+			ProcessMICT(ListData[0][0]);
+			//console.log('ListData', ListData[0][0]);
+		}
+	}
+		
+	//NotifyText.innerHTML += '<br>' + "<b><font color='green'>" + "Upload(s) Complete!</font></b>";
+
+}
+
+
+
+// Returns if a value is a string
+function isString (value) {
+return typeof value === 'string' || value instanceof String;
+}
+
+//Date helper for SPServices to update list - date needs to be in a certain format
+function toDate(dateStr) {
+  var parts = dateStr.split("-")
+  //console.log(parts);
+  return new Date("20" + parts[2], MonthToNumber(parts[1])-1, parts[0]) //parts[1] -1?
+}
+
+function toDateMonthtoNumber(dateStr)
+{
+	var parts = dateStr.split("-");
+	parts[1] = MonthToNumber(parts[1]);
+	
+	var FormattedDate = "20" + parts[2] + '-' + parts[1] + '-' + parts[0];
+	
+	return FormattedDate ;
+}
+
+//Helper to turn Month into an acceptable number
+function MonthToNumber(Month)
+{
+	var M="-1";
+
+	switch(Month)
+	{
+		case "Jan":
+			M="01";
+			break;
+		case "Feb":
+			M="02";
+			break;
+		case "Mar":
+			M="03";
+			break;
+		case "Apr":
+			M="04";
+			break;
+		case "May":
+			M="05";
+			break;
+		case "Jun":
+			M="06";
+			break;
+		case "Jul":
+			M="07";
+			break;
+		case "Aug":
+			M="08";
+			break;
+		case "Sep":
+			M="09";
+			break;
+		case "Oct":
+			M="10";
+			break;
+		case "Nov":
+			M="11";
+			break;
+		case "Dec":
+			M="12";
+			break;
+	}
+	
+	return M;
+}
+
+
+//helper function got at: https://stackoverflow.com/questions/23593052/format-javascript-date-to-yyyy-mm-dd
+function formatDate(date, debug) {
+        var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+	//console.log(d);
+	
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('-') + " 00:00:00";
+}
+/*
+//For IE browsers. Need to handle the file load a bit differently
+function UploadFileButton(e) {
+console.log("Button Upload clicked");
+	//NotifyText.innerHTML ="";
+  	//NotifyText.innerHTML += '<br>' + "<font color='black'>" + "<b>" + e.target.files[0].name + "</b></font><font color='blue'><b> file recieved. " + "</b></font><font color='black'> Note this web page will lock up while the data is uploaded. Please be patient.";
+	console.log('target file = ', e.target.files[0]);
+
+	  var files = e.target.files;
+	  console.log('files = ', files);
+  	var i,f;
+  		for (i = 0, f = files[i]; i != files.length; ++i) {
+    		var reader = new FileReader();
+    		var name = f.name;
+    		
+    		console.log(name);
+    		 
+    		
+    		//only do this if .xls file
+    		if(name.substring(name.length-3)=="xls"){
+    			reader.onload = function(e) {
+    			  var data = new Uint8Array(reader.result);
+    			  var arr = new Array();
+    			  for(var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
+  				  var bstr = arr.join("");
+    			    var cfb = XLS.CFB.read(bstr, {type: 'binary'});
+      				var wb = XLS.parse_xlscfb(cfb);
+      
+      				//set title of workbook to the file name
+      				if(!wb.Props) wb.Props = {};
+	  				wb.Props.Title = f.name;
+       				//NotifyText.innerHTML += '<br>' + "<font color='black'>" + "<b>" + f.name + "</b></font><font color='blue'><b> file recieved. " + "</b></font><font color='black'> Note this web page will lock up while the data is uploaded. Please be patient.";
+
+      				//XLSData.push(WorkBookHandler(wb));  //Create the XLSData from the workbook that was uploaded
+  	  	     		//console.log("XLSData =");
+  	  	     		//console.log(XLSData);
+					  //XLStoSharePointList(XLSData);  //Parse the XLSData
+					  processExcel(wb, e.target._NAME);
+    			};
+    		
+    			
+    		}else{
+    			//assume xlsx
+				reader.onload = function(e){
+					console.log('e = ', e.target.result);
+					var data = new Uint8Array(e.target.result);
+					console.log('data ', data);
+
+					var wb = XLSX.read(data, {type:'array'});
+					processExcel(wb, '');
+				};
+
+				reader.readAsArrayBuffer(f);
+
+    		}
+    		console.log(reader);
+    		reader.readAsArrayBuffer(f);
+
+  		} 
+  		//SanitizeData();
+}
+*/
+
+function is_socialSecurity_Number(str)
+{
+    var regexp = /^(?!000|666)[0-8][0-9]{2}-(?!00)[0-9]{2}-(?!0000)[0-9]{4}$/;
+  
+    if (regexp.test(str)) return true; 
+    else return false;     
+}
+
+//Handle dropping xls file into dropzone		
+function handleDrop(e) {
+console.log("Drag and drop caught");
+	//NotifyText.innerHTML ="";
+  	//NotifyText.innerHTML += '<br>' + "<font color='blue'>" + "<b>" + " Files recieved. " + "</b></font><font color='black'> Note this web page will lock up while the data is uploaded. Please be patient.";
+  	//NotifyText.innerHTML += '<br>' + "<font color='black'>" + "<b>" + e.dataTransfer.files[0].name + "</b></font><font color='blue'><b> file recieved. " + "</b></font><font color='black'> Note this web page will lock up while the data is uploaded. Please be patient.";
+
+  	e.stopPropagation(); //necessary for drop feature to work
+  	e.preventDefault();  //necessary for drop feature to work
+  	var files = e.dataTransfer.files;
+  	var i;
+  		for (i = 0; i < files.length; ++i) {
+			var f = files[i];
+			var reader = new FileReader();
+			reader._NAME = files[i].name;
+    		var name = f.name;
+    		console.log(name);
+    		console.log(i);
+
+    		//Quick check to ensure we only do this if .xls file
+    		if(name.substring(name.length-3)=="xls"){
+    			reader.onload = function(e) {
+					console.log('e = ', e.target._NAME);
+      				var data = e.target.result;
+      				var cfb = XLS.CFB.read(data, {type: 'binary', cellStyles: 'true'});
+      				var wb = XLS.parse_xlscfb(cfb);
+					processExcel(wb, e.target._NAME);
+					 
+				};
+				reader.readAsBinaryString(f);
+    		}else{
+				//assume xlsx
+				reader.onload = function(e){
+					console.log('e = ', e.target._NAME);
+					var data = new Uint8Array(e.target.result);
+					var wb = XLSX.read(data, {type:'array', cellStyles: 'true'});
+					processExcel(wb, e.target._NAME);
+				};
+
+				reader.readAsArrayBuffer(f);
+    		}
+  		} 
+}
+
+String.prototype.contains = function(substr) {
+  return this.indexOf(substr) > -1;
+}
+
+function processExcel(wb, f){
+	console.log('wb = ', wb);
+	//set title of workbook to the file name
+	if(!wb.Props) wb.Props = {};
+		wb.Props.Title = f; //isnt really necessary, just like doing it
+						 
+		var targetXLS = ''; 
+
+		var ExcelSetup=null;
+		$.each(ExcelConfigs, function(i,v){
+			console.log('excel file names = ', v);
+			if(f.contains(v.Keyword)){
+				console.log('determine name exists within file name');
+				ExcelSetup=v;
+			}
+		});
+
+		if(ExcelSetup!=null){
+			//process
+			WorkBookHandler(wb, ExcelSetup);
+		}else alert('No Config exists for this Excel file! Please check that there is a Keyword that matches a word in the file name!');
+
+}
+
+function handleDragover(e) {
+  e.stopPropagation();
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'copy';
+  drop.style.color='#00cc00';
+}
+
+function handleDragleave(e){
+	drop.style.color='#bbb';
+}
+
+
+//Return 1d Array of data of each row of the Array that is passed
+//	Additionally, adds the sheet name as the first element
+//	Result will look like:
+//	
+//	0 SheetName
+//	1 Array of Row 1 Data
+//		0 Column 1
+//		1 Column 2
+//		2 Column 3
+//	2 Array of Row 2 Data
+//		0 Column 1
+//  etc...
+function GetRowData(SheetName, Array, startRow, columnFields, eSetup)
+{
+	var Column=0; //this is the starting column, i assume it will always be 0 - but may need to adjust
+	var Row = [];
+	var i=0;
+	console.log('array ', Array);
+	console.log('startRow ', startRow);
+	console.log('columnFields ', columnFields);
+	Row.push(SheetName); 
+	console.log('start row info ', Array[startRow][0]);
+	var endCondition = false;
+	//Now loop through passed Array until we run out of itemms
+	for(i=startRow; i< Array.length; i++)
+	{
+			var j;
+			var AllRow=[]; //We only want 1 row at a time, so we create an array for it
+
+			//i row    j column
+			//Now step through each column and gather data into the array
+			for(j=0; j< Array[i].length;j++)
+			{
+                //console.log('Array', Array);
+                //only target the column if it matches the column field
+                if(typeof Array[i][j] !== 'undefined'){
+				    if(!isString(Array[i][j].value)) Array[i][j].value='';
+					if(Array[i][0]!=eSetup.EndCondition){
+						//loop through all index of column fields
+						var matchExists=false;
+						var cName='';
+						$.each(columnFields, function(index, value){
+							if(value.columnName==Array[startRow-1][j].value) {
+								matchExists=true;
+						    	cName=value.outputName;
+							}
+						});
+
+						if(matchExists){
+							//double check that it is not (possibly) a SSN
+                            if(is_socialSecurity_Number(Array[i][j].value)) Array[i][j].value="XXX-XX-XXXX";
+                            AllRow.push('"' + cName + '"' + ":" + '"' + Array[i][j].value + '"'); // + '","'
+							AllRow.push('"' + cName + '_fgColor"' + ":" + '"' + Array[i][j].fgColor +'"');
+						}			
+					}else{
+						//hit end condition
+						endCondition=true;
+                    }	
+                }
+			}
+
+			if(!endCondition){
+				if(AllRow.length>0) {
+					Row.push('{'+AllRow.join(',')+'}'); //if there is a row of data then add it to our main array
+				}else console.log("Not enough data in Row");
+			}else break;	 	
+	}
+	Row.shift();
+	var JSONObjs = [];
+ 
+	try {
+		$.each(Row, function(i,v){
+			JSONObjs.push(JSON.parse(v));
+		});
+		
+		var endItemsToRemove = 0;
+
+		console.log('eSetup', eSetup.EndCondition);
+		
+	}
+	catch(e){
+		console.log('e = ', e);
+	}
+	console.log('JSON = ', JSONObjs);
+
+	return JSONObjs;
+}
+
+
+function Process(array, ExcelSetting){
+	console.log('process Excel to SharePoint List!');
+	var allPromises = [];
+	console.log('array = ', array);
+	//determine if the objects already exist, by loading list data from Personnel Data
+	var allListItems = SPHGetListItems(allTitles[0], '?$select=Id,JSON', _spPageContextInfo.webAbsoluteUrl);  
+	var allMatches=[];
+	var newItems=[];
+	var existingItems = []; //as we want to save the list data, we use this array for that
+	var compareColumn = '';
+	compareColumn = ExcelSetting.CompareColumn;
+	console.log('compareColumn ', compareColumn);
+  	allListItems.done(function(data){
+	   console.log('Data from Data:-> ', data);
+		var SPID='';
+	   $.each(data, function(i,v){
+		    //loop through each returned list item and add it to our array
+			existingItems.push(JSON.parse(v.JSON).Data);
+			if(JSON.parse(v.JSON).Keyword==ExcelSetting.Keyword){
+				SPID=v.Id;
+			}
+	   });
+	   console.log('existingItems ', existingItems);
+	    //Now we need to loop through our array of data returned from the EXCEL read
+      	$.each(array, function(i,item){
+			//var SPID=''; //we declare and zero out the variable that will hold our SharePoint ID for the list item (if it exists)
+			var matchedItem = null;
+			var matched = false; 
+			$.each(existingItems, function(ii,vv){ //Loop through each item that we got from our list
+				JSON.parse(vv).map(function(value){
+					if(value[compareColumn]==item[compareColumn]){ //and if the names match, that means the item from our EXCEL already exists in the list
+						matched=true;
+						allMatches.push([value,item]);
+					}
+				}); 
+			});	
+
+			if(!matched){
+				//add to newItems
+				newItems.push(item);
+			}
+		});
+
+
+	   var allItems =[];
+	   
+	   array.map(function(item){
+		   allItems.push(item);
+	   });
+
+	   console.log('newItems = ', newItems);
+	   console.log('allMatches = ', allMatches);
+	   var obj = {};
+
+	   obj['Data'] = JSON.stringify(allItems);
+	   obj['Keyword'] = ExcelSetting.Keyword;
+
+	   var itemProp = {};
+	   itemProp['JSON'] = JSON.stringify(obj);
+	   
+	   console.log('itemProp', itemProp);
+
+	   if(SPID!=''){
+			//the list exists, so we update
+			var updItem = SPHUpdateItemByID(allTitles[0], SPID, itemProp, siteURL, SPHGetItemType(allTitles[0]));
+			
+			
+  			updItem.done(function(data){
+				var Jobj = JSON.parse(itemProp.JSON);
+				console.log('Jobj', JSON.parse(Jobj.Data));
+				$.each(JSON.parse(Jobj.Data), function(ii, vv){
+					console.log('vv', vv);
+					$('#XLSOutput2').append('<div class="line"><span style="color:purple">updating </span>'+ vv[ExcelSetting.CompareColumn] + ' from ' + ExcelSetting.Keyword + '</div>');
+				});
+				$('#XLSOutput2').append('<div lass="line" style="color:slategrey">All Processing done. ' + allMatches.length + ' Items Updated. </span>');
+                setTimeout(function(){
+                    location.reload();
+                }, 2000);
+ 			}).fail(function(e){ alert('Failed Updating Item by ID! ' + e.responseText);});
+  
+	   }else{
+		//list doesnt exist so we create new
+		if(newItems.length>0){
+		   //add items
+		   var createItems = SPHCreateListItem(allTitles[0], itemProp, _spPageContextInfo.webAbsoluteUrl, SPHGetItemType(allTitles[0]));
+		  
+			allPromises.push(createItems);
+	  		createItems.done(function(data){
+		   		console.log('created ', data);
+				
+				var Jobj = JSON.parse(itemProp.JSON);
+		   		console.log('Jobj', Jobj.Data);
+				$.each(JSON.parse(Jobj.Data), function(ii, vv){
+					console.log('vv', vv);
+					$('#XLSOutput').append('<div lass="line"><span style="color:green">Creating New Item:  </span>'+ vv[ExcelSetting.CompareColumn] + ' with Keyword: ' + ExcelSetting.Keyword + '</div>');
+					
+				});
+				$('#XLSOutput').append('<div lass="line" style="color:slategrey">All Processing done. ' + newItems.length.toString()  + ' Items CREATED. </div>');
+				   
+	  		}).fail(function(e){ alert('Failed creating List Item! ' + e.responseText);}); 
+	   	}
+	   }
+			$.when.apply($, allPromises).done(function(){
+				console.log('process excel done');
+			});
+
+  	}).fail(function(e){ alert('Failed Getting List Items! ' + e.responseText);});
+}
+
+function WorkBookHandler(workBook, ExcelSetup)
+{	
+	// will return an array of the worksheet data
+	//		1. WorkSheet Name
+	//		2. Array1
+	//			1. Column Data 1
+	//			2. Column Data 2
+	//			3. etc
+	//		3. Array2
+	 
+	console.log('determined Title of workBook = ', workBook.Props.Title);
+	var Data = [];
+	
+	//loop through each sheet in the workbook
+	workBook.SheetNames.forEach(function(sheetName) {
+			
+		//parse the sheet and store its contents into an array
+		var SheetArray = sheet2arr(workBook.Sheets[sheetName]);
+
+		//create column fields according to ExcelSetup
+		var cFields = [];
+
+		$.each(ExcelSetup.Data, function(i,v){
+			cFields.push({'columnName':v.columnName, 'outputName':v.outputName});
+		})
+
+		console.log('columns for the excel file =', cFields);
+		
+		Process(GetRowData(sheetName, SheetArray, parseInt(ExcelSetup.HeaderRow), cFields, ExcelSetup), ExcelSetup);
+		 
+	});
+
+}
+
+//End Excel Read
+
+</script><html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><head>
+<!--[if gte mso 9]><xml>
+<mso:CustomDocumentProperties>
+<mso:display_urn_x003a_schemas-microsoft-com_x003a_office_x003a_office_x0023_Editor msdt:dt="string">BECHARD, WILLIAM J MSgt USAF HAF NASIC/SCP</mso:display_urn_x003a_schemas-microsoft-com_x003a_office_x003a_office_x0023_Editor>
+<mso:display_urn_x003a_schemas-microsoft-com_x003a_office_x003a_office_x0023_Author msdt:dt="string">BECHARD, WILLIAM J MSgt USAF HAF NASIC/SCP</mso:display_urn_x003a_schemas-microsoft-com_x003a_office_x003a_office_x0023_Author>
+<mso:Order msdt:dt="string">400.000000000000</mso:Order>
+<mso:Is_x0020_this_x0020_information_x002f_data_x0020_sensitive_x003f_ msdt:dt="string">No</mso:Is_x0020_this_x0020_information_x002f_data_x0020_sensitive_x003f_>
+</mso:CustomDocumentProperties>
+</xml><![endif]-->
+</head>

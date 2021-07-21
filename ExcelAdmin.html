@@ -1,0 +1,47 @@
+<div style='transform:translateY(-90px);'>
+<!--Settings Button-->
+<button id='settingsBTN' class='w3-button w3-orange' onclick="openPopUp('SettingsModal'); return false;">Upload/Display Settings</button>
+<!--The ExcelReaderGuide was the web location ot the pdf, not sure if you put hte pdf in same spot as this html file if you can shorten the url to just the file name...-->
+<span class='' style='font-size:xx-large; font-weight:bold; margin-left:4px; cursor:pointer;'><a href='ExcelReaderGuide.pdf' target="_blank">?</a></span>
+<div class="style1">
+    <br />
+    
+</div>
+    
+    <div id="drop">Drop a spreadsheet file here to see sheet data</div>
+    <!--p class="newButton">Click the button to create a File Upload Button.</p>
+    <input type="file" id="files" name="files[]" class="newButton"-->
+    <div id="Notify"></div>
+    <br>
+    <table class="adminOnly tableNotification">
+        <tbody>
+            <tr>	
+                <td><div contenteditable="false" readonly id='XLSOutput'></div></td>
+                <td><div contenteditable="false" readonly id='XLSOutput2'></div></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+        //For drop zone setup ----------------------------------------------------------------------
+var drop = document.getElementById('drop');
+
+if(drop.addEventListener) {
+  drop.addEventListener('dragenter', handleDragover, false);
+  drop.addEventListener('dragover', handleDragover, false);
+  drop.addEventListener('dragleave', handleDragleave, false);
+  drop.addEventListener('drop', handleDrop, false);
+}
+//End for drop zone setup -----------------------------------------------------------------
+//document.getElementById('files').addEventListener('change', handleFileSelect, false);
+</script><html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><head>
+<!--[if gte mso 9]><xml>
+<mso:CustomDocumentProperties>
+<mso:display_urn_x003a_schemas-microsoft-com_x003a_office_x003a_office_x0023_Editor msdt:dt="string">BECHARD, WILLIAM J MSgt USAF HAF NASIC/SCP</mso:display_urn_x003a_schemas-microsoft-com_x003a_office_x003a_office_x0023_Editor>
+<mso:display_urn_x003a_schemas-microsoft-com_x003a_office_x003a_office_x0023_Author msdt:dt="string">BECHARD, WILLIAM J MSgt USAF HAF NASIC/SCP</mso:display_urn_x003a_schemas-microsoft-com_x003a_office_x003a_office_x0023_Author>
+<mso:Order msdt:dt="string">500.000000000000</mso:Order>
+<mso:Is_x0020_this_x0020_information_x002f_data_x0020_sensitive_x003f_ msdt:dt="string">No</mso:Is_x0020_this_x0020_information_x002f_data_x0020_sensitive_x003f_>
+</mso:CustomDocumentProperties>
+</xml><![endif]-->
+</head>
