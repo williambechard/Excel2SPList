@@ -1369,7 +1369,7 @@ function initSetup(){
     var allListItems = SPHGetListItems(allTitles[1], '?$Select=Id,JSON', siteURL);  
 
     allListItems.done(function(data){
-        //console.log('data = ', data);
+        console.log('All List items data = ', data);
        
         data.sort(function(a,b){
             var a2 = JSON.parse(a['JSON']);
@@ -1377,8 +1377,10 @@ function initSetup(){
             return (a2.TabPosition > b2.TabPosition) ? 1:-1;
         });
 
+        var indexData = data.map(function(item){return JSON.parse(item.JSON).Keyword});
+        console.log('indexData = ', indexData);
         //create dataTables according to our saved data
-        var allListData = SPHGetListItems(allTitles[0], '?$Select=Id,JSON,Modified', siteURL);  
+        var allListData = SPHGetListItems(allTitles[0], '?$Select=Id,JSON,Modified,Title', siteURL);  
 
         //grab the addList BTN
         var addListBTN = $('#addList');
@@ -1483,13 +1485,21 @@ function initSetup(){
         });
 
         allListData.done(function(data){
-            //console.log('list data,  ', data);
-            //console.log('ExcelConfigs ', ExcelConfigs);
+            
+            //ensure we sort based on the Settings TabPosition
+            data.sort(function(a,b){
+                var a2 = JSON.parse(a['JSON']);
+                var b2 = JSON.parse(b['JSON']);
+               
+                return (indexData.indexOf(a2.Keyword) > indexData.indexOf(b2.Keyword)) ? 1:-1;
+            });
+
+            console.log('data sorted = ', data);
+
             var tBar =''
             $.each(data, function(i,v){
                 var item = JSON.parse(v.JSON);
-                //console.log(item.Data)
-                //console.log(item.Keyword);
+ 
                 
                 var matchingConfig = ExcelConfigs.filter(function(v){
                     return v.Keyword == item.Keyword;
@@ -2330,11 +2340,11 @@ function GetRowData(SheetName, Array, startRow, columnFields, eSetup)
 
 
 function Process(array, ExcelSetting){
-	console.log('process Excel to SharePoint List!');
+	console.log('process Excel to SharePoint List! Excel keyword = ', ExcelSetting.Keyword);
 	var allPromises = [];
 	console.log('array = ', array);
 	//determine if the objects already exist, by loading list data from Personnel Data
-	var allListItems = SPHGetListItems(allTitles[0], '?$select=Id,JSON', _spPageContextInfo.webAbsoluteUrl);  
+	var allListItems = SPHGetListItems(allTitles[0], '?$select=Id,JSON, Title', _spPageContextInfo.webAbsoluteUrl);  
 	var allMatches=[];
 	var newItems=[];
 	var existingItems = []; //as we want to save the list data, we use this array for that
@@ -2345,11 +2355,13 @@ function Process(array, ExcelSetting){
 	   console.log('Data from Data:-> ', data);
 		var SPID='';
 	   $.each(data, function(i,v){
-		    //loop through each returned list item and add it to our array
-			existingItems.push(JSON.parse(v.JSON).Data);
-			if(JSON.parse(v.JSON).Keyword==ExcelSetting.Keyword){
-				SPID=v.Id;
-			}
+            //loop through each returned list item and add it to our array
+            if(JSON.parse(v.JSON).Keyword==ExcelSetting.Keyword){
+			    existingItems.push(JSON.parse(v.JSON).Data);
+			    if(JSON.parse(v.JSON).Keyword==ExcelSetting.Keyword){
+				    SPID=v.Id;
+                }
+            }
 	   });
 	   console.log('existingItems ', existingItems);
 	    //Now we need to loop through our array of data returned from the EXCEL read
@@ -2386,9 +2398,10 @@ function Process(array, ExcelSetting){
 	   obj['Data'] = JSON.stringify(allItems);
 	   obj['Keyword'] = ExcelSetting.Keyword;
 
+
 	   var itemProp = {};
 	   itemProp['JSON'] = JSON.stringify(obj);
-	   
+	   itemProp['Title'] = ExcelSetting.Keyword;
 	   console.log('itemProp', itemProp);
 
 	   if(SPID!=''){
@@ -2405,7 +2418,7 @@ function Process(array, ExcelSetting){
 				});
 				$('#XLSOutput2').append('<div lass="line" style="color:slategrey">All Processing done. ' + allMatches.length + ' Items Updated. </span>');
                 setTimeout(function(){
-                    location.reload();
+                    //location.reload();
                 }, 2000);
  			}).fail(function(e){ alert('Failed Updating Item by ID! ' + e.responseText);});
   
@@ -2427,12 +2440,15 @@ function Process(array, ExcelSetting){
 					
 				});
 				$('#XLSOutput').append('<div lass="line" style="color:slategrey">All Processing done. ' + newItems.length.toString()  + ' Items CREATED. </div>');
-				   
+               
 	  		}).fail(function(e){ alert('Failed creating List Item! ' + e.responseText);}); 
 	   	}
 	   }
 			$.when.apply($, allPromises).done(function(){
-				console.log('process excel done');
+                console.log('process excel done');
+                setTimeout(function(){
+                    location.reload();
+                }, 2000);  
 			});
 
   	}).fail(function(e){ alert('Failed Getting List Items! ' + e.responseText);});
@@ -2450,24 +2466,28 @@ function WorkBookHandler(workBook, ExcelSetup)
 	 
 	console.log('determined Title of workBook = ', workBook.Props.Title);
 	var Data = [];
-	
+    
+    //we only want to grab the first sheet!
+    var i =0;
+
 	//loop through each sheet in the workbook
 	workBook.SheetNames.forEach(function(sheetName) {
-			
-		//parse the sheet and store its contents into an array
-		var SheetArray = sheet2arr(workBook.Sheets[sheetName]);
+		if(i==0){
+		    //parse the sheet and store its contents into an array
+		    var SheetArray = sheet2arr(workBook.Sheets[sheetName]);
 
-		//create column fields according to ExcelSetup
-		var cFields = [];
+		    //create column fields according to ExcelSetup
+		    var cFields = [];
 
-		$.each(ExcelSetup.Data, function(i,v){
-			cFields.push({'columnName':v.columnName, 'outputName':v.outputName});
-		})
+		    $.each(ExcelSetup.Data, function(i,v){
+			    cFields.push({'columnName':v.columnName, 'outputName':v.outputName});
+		    })
 
-		console.log('columns for the excel file =', cFields);
+		    console.log('columns for the excel file =', cFields);
 		
-		Process(GetRowData(sheetName, SheetArray, parseInt(ExcelSetup.HeaderRow), cFields, ExcelSetup), ExcelSetup);
-		 
+		    Process(GetRowData(sheetName, SheetArray, parseInt(ExcelSetup.HeaderRow), cFields, ExcelSetup), ExcelSetup);
+            i++;
+        }
 	});
 
 }
