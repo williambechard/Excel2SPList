@@ -1,8 +1,51 @@
 <div style='transform:translateY(-90px);'>
 <!--Settings Button-->
 <button id='settingsBTN' class='w3-button w3-orange' onclick="openPopUp('SettingsModal'); return false;">Upload/Display Settings</button>
-<!--The ExcelReaderGuide was the web location ot the pdf, not sure if you put hte pdf in same spot as this html file if you can shorten the url to just the file name...-->
-<span class='' style='font-size:xx-large; font-weight:bold; margin-left:4px; cursor:pointer;'><a href='ExcelReaderGuide.pdf' target="_blank">?</a></span>
+<div id="listArea">
+    <div id="listSettings"> 
+        <div class="lSettingHeader">Excel Settings List</div>
+        <table class="display" cellspacing="0" width="100%">
+            <thead style="color:black;">   
+                <tr>
+                    <th>
+                        Keyword
+                    </th>
+                    <th>
+                        Tab Pos
+                    </th>
+                    <th>
+                        Tab Name
+                    </th>
+                    <th>
+                        Header Row
+                    </th>
+                </tr>        
+            </thead> 
+            <tfoot>
+            </tfoot>  
+        </table>
+    </div>
+    <div id="listData">
+        <div class="lSettingHeader">Excel Data List</div>
+        <table class="display" cellspacing="0" width="100%">
+            <thead>  
+                <tr style="color:black;">
+                    <th>
+                        Keyword
+                    </th>
+                    <th>
+                        Records
+                    </th>
+                </tr>            
+            </thead> 
+            <tfoot>  
+            </tfoot>  
+        </table>
+    </div>
+</div>
+<button id="sharepointBTN" onclick="SPLoadBTN(); return false;">SharePoint Get</button>
+<button id="sharepointSETUPBTN" onclick="SPLoadSetupBTN(); return false;">SharePoint Get SETUP</button>
+<span class='' style='font-size:xx-large; font-weight:bold; margin-left:4px; cursor:pointer;'><a href='/sites/20127/grps/sc/SiteAssets/Scripts/Personnel/ExcelReaderGuide.pdf' target="_blank">?</a></span>
 <div class="style1">
     <br />
     
@@ -17,7 +60,6 @@
         <tbody>
             <tr>	
                 <td><div contenteditable="false" readonly id='XLSOutput'></div></td>
-                <td><div contenteditable="false" readonly id='XLSOutput2'></div></td>
             </tr>
         </tbody>
     </table>
